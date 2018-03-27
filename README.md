@@ -1,12 +1,16 @@
 # odoo-project
 
 本项目为针对odoo所写的开源项目以及其他同僚的项目模块。请不要作为商业使用(若需要,请先联系作者)。 
+
 本项目未做任何开源协议，不提供任何信息，仅供参考，个人学习。 
+
 本项目里所在内容若有侵权,请联系作者进行更改.谢谢.
 
 python 规范 基本要求：
 
-代码每行不超过80字符； 注释的行长都不超过72字符； 每级缩进都使用四个空格。 其他规范参考： http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents/
+代码每行不超过80字符； 注释的行长都不超过72字符； 每级缩进都使用四个空格。
+
+其他规范参考： http://zh-google-styleguide.readthedocs.io/en/latest/google-python-styleguide/contents/
 
 git 规范 标示 文件名/模块名：内容。
 
