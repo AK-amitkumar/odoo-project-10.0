@@ -17,26 +17,26 @@
 ##############################################################################
 
 {
-	'name':"进销存报表",
-	'author': 'Gavin Gu',
-	'website': '',
-	"version":"1.0",
-	'depends':['stock'],
-	"description":
-u"""
-进销存报表
-===========================
-* 进销存报表
-
-模块说明
----------------------------
-进销存报表模块
-""",
-	"category":"stock",
-	"installable":True,
-	'application':True,
-	"data":[
-		"security/ir.model.access.csv",
-		"models/qunar_report_stock_view.xml"
-		],
+    'name': "进销存报表",
+    'author': 'Gavin Gu',
+    'website': '',
+    "version": "1.0",
+    'depends': ['stock'],
+    "description":
+        u"""
+                进销存报表
+                ===========================
+                * 进销存报表
+                
+                模块说明
+                ---------------------------
+                进销存报表模块
+        """,
+    "category": "stock",
+    "installable": True,
+    'application': True,
+    "data": [
+        "security/ir.model.access.csv",
+        "models/qunar_report_stock_view.xml"
+    ],
 }

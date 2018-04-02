@@ -30,6 +30,10 @@
         'views/account_config_settings_views.xml',
         'demo/payment_acquirer_data.xml',
     ],
+
+    "external_dependencies": {
+        "python": ['Crypto'],
+    },
     # only loaded in demonstration mode
     'installable': True,
     'active': False,

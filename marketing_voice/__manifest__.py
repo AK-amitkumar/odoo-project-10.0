@@ -26,5 +26,9 @@
     "qweb": [
         'static/xml/*.xml'
     ],
+    "external_dependencies": {
+        "python": ['baidu-aip'],
+    },
+
     'installable': True,
 }

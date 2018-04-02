@@ -3,21 +3,16 @@ from odoo import http
 import json
 import logging
 import pprint
-import urllib2
-import werkzeug
-
 from odoo import http
 from odoo.http import request
 from odoo import api, fields, models, _
-from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
-from Crypto.Hash import SHA
-from base64 import b64decode
 import func
 
 _logger = logging.getLogger(__name__)
+
+
 class CtChanpayWebsite(http.Controller):
-    _return_url='/payment/chanpay/ipn'
+    _return_url = '/payment/chanpay/ipn'
     _notify_url = '/payment/chanpay/ipn/'
     https_verify_url = 'https://mapi.alipay.com/gateway.do?service=notify_verify&'
     http_verify_url = 'http://notify.alipay.com/trade/notify_query.do?'
@@ -70,7 +65,6 @@ class CtChanpayWebsite(http.Controller):
             else:
                 return False
 
-
     @http.route('/payment/chanpay/ipn', type='http', auth="none", methods=['POST'], csrf=False)
     def alipay_ipn(self, **post):
         """ Alipay IPN. """
@@ -92,29 +86,27 @@ class CtChanpayWebsite(http.Controller):
             order.action_confirm()
             return 'success'
         else:
-            txs = request.env['payment.transaction'].sudo().search([('reference', '=',  post.get('outer_trade_no'))])
+            txs = request.env['payment.transaction'].sudo().search([('reference', '=', post.get('outer_trade_no'))])
             if txs:
                 res = {
                     'state_message': post.get('inner_trade_no'),
                     'acquirer_reference': post.get('outer_trade_no'),
                 }
-                res.update(state='done', date_validate= fields.datetime.now())
+                res.update(state='done', date_validate=fields.datetime.now())
                 txs.write(res)
                 order = request.env['sale.order'].sudo().search([('id', '=', txs.sale_order_id.id)])
                 order.action_confirm()
                 return 'success'
 
-
-
     @http.route('/payment/chanpay/refuse/', type='http', auth="none", methods=['POST'], csrf=False)
     def chanpay_refuse(self, **post):
         _logger.info('退款成功返回信息 ========= %s', pprint.pformat(post))  # debug
         if post:
-            data=pprint.pformat(post)
+            data = pprint.pformat(post)
             txs = request.env['payment.transaction'].sudo().search([('reference', '=', post.get('outer_trade_no'))])
             res = {
                 'inner_trade_no': post.get('inner_trade_no'),
-                'refund_status':'2',
+                'refund_status': '2',
                 'gmt_refund': post.get('buyer_id'),
                 'extension': post.get('extension'),
             }

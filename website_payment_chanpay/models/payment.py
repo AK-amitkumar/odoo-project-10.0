@@ -1,10 +1,7 @@
 # coding: utf-8
 
-import json
-import logging
-import urlparse
+
 import func
-import socket
 
 try:
     import simplejson as json
@@ -13,14 +10,10 @@ except ImportError:
 import logging
 import urlparse
 import urllib2
-from lxml import etree
-import random
-import string, datetime, time
+
 from odoo.osv import osv
 from odoo import api, fields, models, _
 from odoo.addons.payment.models.payment_acquirer import ValidationError
-from odoo.tools.float_utils import float_compare
-import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -87,11 +80,11 @@ class Acquirerchanpay(models.Model):
         base_url = self.env['ir.config_parameter'].sudo().get_param('web.base.url')
         _return_url = 'chanpay/_return_url'
         chanpay_tx_values = dict(values)
-        order= self.env['sale.order'].sudo().search([('name','=',values['reference'])])
+        order = self.env['sale.order'].sudo().search([('name', '=', values['reference'])])
         name = ""
         if order:
             for line in order.order_line:
-                name+=line.product_id.name+";"
+                name += line.product_id.name + ";"
         else:
             name = "Pay Product"
         chanpay_tx_values = ({
@@ -102,7 +95,7 @@ class Acquirerchanpay(models.Model):
             'notify_url': '%s' % urlparse.urljoin(base_url, '/payment/chanpay/ipn/'),
             'out_trade_no': values['reference'],
             'partner_id': self.partner_id,
-            'product_name':name,
+            'product_name': name,
             'return_url': '%s' % urlparse.urljoin(base_url, '/shop/payment/validate'),
             'service': self.service,
             'sign_type': 'RSA',
@@ -147,7 +140,7 @@ class Txchanpay(models.Model):
 
     # chanpay_txn_type = fields.Char('Transaction type')
     inner_trade_no = fields.Char(string="退款交易订单号")
-    refund_status = fields.Selection( [('1',u'退款中'),('2',u'退款完成')], u'退款状态', )
+    refund_status = fields.Selection([('1', u'退款中'), ('2', u'退款完成')], u'退款状态', )
     gmt_refund = fields.Date(string="交易退款时间")
     extension = fields.Char(string="备注")
 
@@ -171,15 +164,16 @@ class Txchanpay(models.Model):
         })
         _, prestr = func.params_filter_add(valus)
         geturl = url + prestr
-        #raise osv.except_osv(u'警告', geturl)
+        # raise osv.except_osv(u'警告', geturl)
         request = urllib2.Request(geturl)
         data = urllib2.urlopen(request).read()
         get_data = json.loads(data)
         if get_data:
             if 'error_message' in get_data:
-                raise osv.except_osv(u'警告', get_data.get('error_message')+"===="+get_data.get('memo'))
+                raise osv.except_osv(u'警告', get_data.get('error_message') + "====" + get_data.get('memo'))
             else:
-               self.refund_status='1'
+                self.refund_status = '1'
+
     # --------------------------------------------------
     # FORM RELATED METHODS
     # --------------------------------------------------
