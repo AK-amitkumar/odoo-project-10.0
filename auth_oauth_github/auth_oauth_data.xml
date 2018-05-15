@@ -8,9 +8,9 @@
             <field name="scope">authorization_code</field>
             <field name="validation_endpoint">https://github.com/login/oauth/access_token</field>
             <field name="data_endpoint">https://api.github.com/user</field>
-            <field name="css_class">fa fa-qq</field>
+            <field name="css_class">fa fa-github</field>
             <field name="body">Log in with GitHub</field>
-            <field name="client_id">b7e490be2f8d43ffa0ef</field>
+            <field name="client_id">xxxxxxxx</field>
         </record>
     </data>
 </openerp>
