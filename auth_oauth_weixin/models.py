@@ -12,15 +12,45 @@ from odoo import fields, models, api
 from odoo import http
 from odoo import SUPERUSER_ID
 from odoo.addons.auth_oauth.controllers.main import fragment_to_query_string
-from odoo.addons.auth_oauth.controllers.main import OAuthController
+from odoo.addons.auth_oauth.controllers.main import OAuthController, OAuthLogin
 from odoo.addons.auth_signup.models.res_partner import SignupError, now
-
+from odoo.http import request
 from odoo.addons.web.controllers.main import login_and_redirect
 from odoo.addons.web.controllers.main import set_cookie_and_redirect
 
 from odoo.modules.registry import RegistryManager
 
 _logger = logging.getLogger(__name__)
+
+
+class OAuthLogin_weixin(OAuthLogin):
+
+    def list_providers(self):
+        try:
+            providers = request.env['auth.oauth.provider'].sudo().search_read([('enabled', '=', True)])
+        except Exception:
+            providers = []
+        for provider in providers:
+            return_url = request.httprequest.url_root + 'auth_oauth/signin'
+            state = self.get_state(provider)
+            if provider['id'] == request.env.ref('auth_oauth_weixin.provider_weixin').id:
+                params = dict(
+                    response_type='token',
+                    appid=provider['client_id'],
+                    redirect_uri=return_url,
+                    scope=provider['scope'],
+                    state=json.dumps(state),
+                )
+            else:
+                params = dict(
+                    response_type='token',
+                    client_id=provider['client_id'],
+                    redirect_uri=return_url,
+                    scope=provider['scope'],
+                    state=json.dumps(state),
+                )
+            provider['auth_link'] = "%s?%s" % (provider['auth_endpoint'], werkzeug.url_encode(params))
+        return providers
 
 
 class OAuthController_extend(OAuthController):
@@ -141,8 +171,8 @@ class res_users(models.Model):
         oauth_provider = self.env['auth.oauth.provider'].browse(provider)
         data = {
             'grant_type': str(oauth_provider.scope),
-            'client_id': str(oauth_provider.client_id),
-            'client_secret': 'c56a3f0c18a96e3df33a528c1378ae5149b96fba',
+            'appid': str(oauth_provider.client_id),
+            'secret': 'xxxxxxxxxx',
             'code': str(params['code']),
         }
         headers = {'Accept': 'application/json'}

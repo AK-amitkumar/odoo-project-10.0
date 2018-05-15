@@ -2,14 +2,14 @@
 <openerp>
     <data noupdate="1">
 
-        <record id="provider_qq" model="auth.oauth.provider">
-            <field name="name">GitHub登录</field>
-            <field name="auth_endpoint">https://github.com/login/oauth/authorize</field>
-            <field name="scope">authorization_code</field>
-            <field name="validation_endpoint">https://github.com/login/oauth/access_token</field>
-            <field name="data_endpoint">https://api.github.com/user</field>
-            <field name="css_class">fa fa-github</field>
-            <field name="body">Log in with GitHub</field>
+        <record id="provider_weixin" model="auth.oauth.provider">
+            <field name="name">微信登录</field>
+            <field name="auth_endpoint">https://open.weixin.qq.com/connect/oauth2/authorize</field>
+            <field name="scope">snsapi_userinfo</field>
+            <field name="validation_endpoint">https://api.weixin.qq.com/sns/oauth2/access_token</field>
+            <field name="data_endpoint">https://api.weixin.qq.com/sns/userinfo</field>
+            <field name="css_class">fa fa-wechat</field>
+            <field name="body">Log in with Wechat</field>
             <field name="client_id">xxxxxxxx</field>
         </record>
     </data>

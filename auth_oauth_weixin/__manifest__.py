@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "auth_oauth_github",
+    'name': "auth_oauth_weixin",
 
     'summary': """
-        for github authorization and login into Odoo 
+        for weixin authorization and login into Odoo 
         """,
 
     'description': """
